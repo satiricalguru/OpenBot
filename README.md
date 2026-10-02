@@ -19,6 +19,9 @@ Plus a video brain that transcribes, understands and searches every video you ow
 [![Ollama](https://img.shields.io/badge/models-Ollama%20%7C%20Groq%20%7C%20Gemini-f2a65a?style=for-the-badge)](#-free-model-options)
 [![CI](https://img.shields.io/github/actions/workflow/status/satiricalguru/OpenBot/ci.yml?style=for-the-badge&label=CI)](.github/workflows/ci.yml)
 
+<a href="https://github.com/satiricalguru/OpenBot/releases/latest"><img src="https://img.shields.io/badge/Download%20for%20macOS-ffffff?style=for-the-badge&logo=apple&logoColor=black" alt="Download for macOS" height="40"></a>&nbsp;
+<a href="#-quick-start"><img src="https://img.shields.io/badge/Run%20from%20source-262626?style=for-the-badge&logo=github&logoColor=white" alt="Run from source" height="40"></a>
+
 [**Quick start**](#-quick-start) · [**Features**](#-features) · [**Screenshots**](#-screenshots) · [**Demo video**](docs/assets/demo.mp4) · [**How it works**](#-how-it-works) · [**Contributing**](CONTRIBUTING.md)
 
 <br>
@@ -51,6 +54,10 @@ Always-on AI teammates arrived in 2026, but they sit behind expensive plans. Ope
 ---
 
 ## 🚀 Quick start
+
+**Option A: download the app.** Grab `OpenBot-…-mac-arm64.zip` from the [latest release](https://github.com/satiricalguru/OpenBot/releases/latest), unzip it, move it to Applications, then right-click → **Open** (the app is unsigned). You'll still need `ffmpeg` and a free model: `brew install ffmpeg ollama && ollama pull qwen3:8b`.
+
+**Option B: run from source** (macOS, Linux or Windows):
 
 ```bash
 # 1. Install the free tools (macOS shown; Linux/Windows work too)
