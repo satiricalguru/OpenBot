@@ -1,0 +1,15 @@
+name: Bug report
+description: Something isn't working
+labels: [bug]
+body:
+  - type: textarea
+    attributes: { label: What happened?, description: Include steps to reproduce. }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Expected behavior }
+  - type: input
+    attributes: { label: Model / provider, placeholder: "ollama · qwen3:8b" }
+  - type: input
+    attributes: { label: OS & OpenBot version, placeholder: "macOS 15 · 0.2.0" }
+  - type: textarea
+    attributes: { label: Logs or screenshots, render: shell }

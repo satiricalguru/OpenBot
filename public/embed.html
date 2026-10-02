@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenBot Player</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; font: 13px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #fff; overflow: hidden; }
+    video { width: 100%; height: 100%; display: block; background: #000; }
+    .bar { position: absolute; top: 0; left: 0; right: 0; display: flex; gap: 8px; align-items: center; padding: 10px 12px; background: linear-gradient(rgba(0,0,0,.7), transparent); opacity: 0; transition: opacity .2s; }
+    body:hover .bar { opacity: 1; }
+    .bar b { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar input { background: rgba(255,255,255,.15); border: 0; border-radius: 8px; padding: 6px 10px; color: #fff; width: 180px; outline: none; }
+    .bar a { color: #fff; opacity: .8; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .bar a img { width: 18px; height: 18px; }
+    .hits { position: absolute; top: 46px; right: 12px; width: 260px; max-height: 60%; overflow-y: auto; background: rgba(15,15,22,.95); border-radius: 10px; display: none; }
+    .hits div { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .hits div:hover { background: rgba(139,108,255,.25); }
+    .hits span { color: #b9a6ff; font-family: ui-monospace, monospace; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <video id="v" controls playsinline preload="metadata"></video>
+  <div class="bar"><b id="title"></b><input id="q" placeholder="Search in video…" /><a id="brand" target="_blank"><img src="/img/logo.svg" alt="" />OpenBot</a></div>
+  <div class="hits" id="hits"></div>
+  <script>
+    const id = location.pathname.split('/').pop();
+    const v = document.getElementById('v');
+    const fmt = (t) => { t = Math.floor(t); const m = Math.floor(t / 60), s = t % 60; return `${m}:${String(s).padStart(2, '0')}`; };
+    document.getElementById('brand').href = `/watch/${id}`;
+    fetch(`/api/videos/${id}`).then((r) => r.json()).then((d) => {
+      v.src = d.src; if (d.thumb) v.poster = d.thumb;
+      document.getElementById('title').textContent = d.title;
+      if (d.segments?.length) { const tr = document.createElement('track'); tr.kind = 'captions'; tr.src = `/api/videos/${id}/captions.vtt`; tr.label = 'Captions'; tr.srclang = d.language || 'en'; v.append(tr); }
+      const t = new URLSearchParams(location.search).get('t'); if (t) v.currentTime = Number(t);
+    });
+    const hits = document.getElementById('hits');
+    document.getElementById('q').addEventListener('keydown', async (e) => {
+      if (e.key !== 'Enter') return;
+      const q = e.target.value.trim(); if (!q) { hits.style.display = 'none'; return; }
+      const res = await fetch(`/api/videos/${id}/search?q=${encodeURIComponent(q)}`).then((r) => r.json());
+      hits.innerHTML = '';
+      res.sort((a, b) => a.t - b.t).forEach((h) => { const d = document.createElement('div'); d.innerHTML = `<span>${fmt(h.t)}</span>`; d.append(h.text || '(visual match)'); d.onclick = () => { v.currentTime = h.t; v.play(); }; hits.append(d); });
+      if (!res.length) hits.innerHTML = '<div>No matches</div>';
+      hits.style.display = 'block';
+    });
+    const session = Math.random().toString(36).slice(2); let watched = 0, last = null;
+    v.addEventListener('play', () => (last = performance.now()));
+    setInterval(() => { if (last != null && !v.paused) { watched += (performance.now() - last) / 1000; last = performance.now(); }
+      if (watched >= 1) { navigator.sendBeacon(`/api/videos/${id}/view`, new Blob([JSON.stringify({ session, seconds: watched, t: v.currentTime, referrer: document.referrer })], { type: 'application/json' })); watched = 0; } }, 10000);
+  </script>
+</body>
+</html>

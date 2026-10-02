@@ -1,0 +1,13 @@
+{
+  "name": "OpenBot",
+  "short_name": "OpenBot",
+  "description": "Free AI teammates with their own computers + a searchable AI video library.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b10",
+  "theme_color": "#0b0b10",
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,14 @@
+name: Feature request
+description: Suggest an idea for OpenBot
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes: { label: What problem would this solve? }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Proposed solution }
+  - type: checkboxes
+    attributes:
+      label: Free forever
+      options:
+        - label: This works without paid services

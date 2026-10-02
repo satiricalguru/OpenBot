@@ -1,0 +1,69 @@
+{
+  "name": "openbot",
+  "version": "0.2.0",
+  "description": "OpenBot: free, open-source AI teammates with their own computers, plus a searchable AI video library. A desktop app alternative to Grok Bot, OpenAI dots and muse.ai.",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server/index.js",
+    "app": "electron .",
+    "dist": "electron-builder --mac --dir",
+    "check": "node scripts/check.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "node-cron": "^4.6.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "org.openbot.app",
+    "productName": "OpenBot",
+    "files": [
+      "electron/**",
+      "server/**",
+      "public/**",
+      "package.json"
+    ],
+    "asar": false,
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "public/img/icon-1024.png",
+      "target": [
+        "dir"
+      ],
+      "identity": null
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "author": "OpenBot contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satiricalguru/OpenBot.git"
+  },
+  "homepage": "https://github.com/satiricalguru/OpenBot#readme",
+  "keywords": [
+    "ai-agents",
+    "desktop-app",
+    "electron",
+    "ollama",
+    "local-llm",
+    "video-search",
+    "whisper",
+    "clip",
+    "self-hosted",
+    "grok-bot-alternative",
+    "muse-ai-alternative"
+  ]
+}
